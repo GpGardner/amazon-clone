@@ -21,8 +21,6 @@ function Product({ id, title, image, price, rating}) {
     });
   };
 
-  console.log("This is the basket", basket);
-
   return (
     <div className="product">
       <div className="product__info">
