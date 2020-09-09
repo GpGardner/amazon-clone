@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,7 @@ import { useStateValue } from "./StateProvider";
 
 function Header() {
   const [{ basket }, dispatch] = useStateValue();
+  const [ displayName, setDisplayName ] = useState("Guest");
 
 
   return (
@@ -28,7 +29,7 @@ function Header() {
 
       <div className="header__nav">
         <div className="header__option">
-          <span className="header__optionLineOne">Hello Guest</span>
+          <span className="header__optionLineOne">Hello {displayName}</span>
           <span className="header__optionLineTwo">Sign In</span>
         </div>
         <div className="header__option">
