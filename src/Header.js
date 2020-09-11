@@ -12,10 +12,10 @@ function Header() {
   const [{ user, basket }, dispatch] = useStateValue();
 
   const handleAuthentication = () => {
-    if(user) {
+    if (user) {
       auth.signOut();
     }
-  }
+  };
 
   return (
     <div className="header">
@@ -33,24 +33,32 @@ function Header() {
       </div>
 
       <div className="header__nav">
-        <Link to={!user && "/login"} className="header__signIn">
+        <Link to={!user && "/login"} className="header__noLink">
           <div onClick={handleAuthentication} className="header__option">
-            <span className="header__optionLineOne">Hello {user ? user.email : 'Guest'}</span>
-            <span className="header__optionLineTwo">{user ? 'Sign Out?' : "Sign In"}</span>
+            <span className="header__optionLineOne">
+              Hello {user ? user.email : "Guest"}
+            </span>
+            <span className="header__optionLineTwo">
+              {user ? "Sign Out?" : "Sign In"}
+            </span>
           </div>
         </Link>
-        <div className="header__option">
-          <span className="header__optionLineOne">Returns</span>
-          <span className="header__optionLineTwo">& Orders</span>
-        </div>
+        <Link to="/orders" className="header__noLink">
+          <div className="header__option">
+            <span className="header__optionLineOne">Returns</span>
+            <span className="header__optionLineTwo">& Orders</span>
+          </div>
+        </Link>
         <div className="header__option">
           <span className="header__optionLineOne">Your</span>
           <span className="header__optionLineTwo">Prime</span>
         </div>
-        <Link to="/checkout">
+        <Link to="/checkout" className="header__noLink">
           <div className="header__optionBasket">
             <ShoppingBasketIcon />
-            <span className="header__optionLineTwo header__basketCount">{basket?.length}</span>
+            <span className="header__optionLineTwo header__basketCount">
+              {basket?.length}
+            </span>
           </div>
         </Link>
       </div>
