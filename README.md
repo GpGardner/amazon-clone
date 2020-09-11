@@ -1,6 +1,9 @@
 Full Stack Amazon Clone: https://clone-ae657.web.app/login
 
-![homepage](./images/homePage.png)
+![Homepage](./images/homePage.png)
+![Basket](./images/Basket.png)
+![Checkout](./images/Checkout.png)
+![Previous Orders](./images/previousOrders.png)
 
 
 This project uses: 
