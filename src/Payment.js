@@ -7,10 +7,11 @@ import { Link, useHistory } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { getBasketTotal } from "./reducer";
 import axios from "./axios";
+import { db } from "./firebase";
 
 function Payment() {
-	const [{ basket, user }, dispatch] = useStateValue();
-	const history = useHistory();
+  const [{ basket, user }, dispatch] = useStateValue();
+  const history = useHistory();
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -21,29 +22,48 @@ function Payment() {
 
   useEffect(() => {
     const getClientSecret = async () => {
+      console.log(`basket total: `, basket);
       const response = await axios({
         method: "post",
         url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
       });
       setClientSecret(response.data.clientSecret);
     };
+
+    getClientSecret();
   }, [basket]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-    }).then(({paymentIntent}) => {
-			setSucceeded(true);
-			setError(null);
-			setProcessing(false);
+    const payload = await stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntent }) => {
+        db.collection("users")
+          .doc(user?.uid)
+          .collection("orders")
+          .doc(paymentIntent.id)
+          .set({
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
 
-			history.replace('/orders')
-		})
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false);
+
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
+
+        history.replace("/orders");
+      });
   };
 
   const handleChange = (e) => {
@@ -91,6 +111,9 @@ function Payment() {
             <h3>Payment method</h3>
           </div>
           <div className="payment__details">
+            <small>
+              To test enter 42 repeatedly in the strip card component
+            </small>
             <form onSubmit={handleSubmit}>
               <CardElement onChange={handleChange} />
               <div className="payment__priceContainer">
