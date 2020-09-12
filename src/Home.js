@@ -1,9 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Product from "./Product";
+import axios from "axios";
 
 function Home() {
-  return (
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const response = await axios({
+        method: "get",
+        url: "https://fakestoreapi.com/products",
+        responseType: "stream",
+      });
+      setProducts(response.data);
+    };
+    getProducts();
+  }, []);
+
+  const randomRating = (val) => {
+    return Math.floor(Math.random() * val);
+  };
+
+  return products ? (
+    <div className="home">
+      <div className="home__container">
+        <img
+          className="home__image"
+          src="https://images-eu.ssl-images-amazon.com/images/G/31/prime/Gateway/2020/May/gaming_1500x600._CB431281464_.jpg"
+          alt="amazon background"
+        />
+        {products.map((product) => (
+        <div className="home__row">
+          <Product
+            key={product.id}
+            id={product.id}
+            title={product.title}
+            price={product.price}
+            rating={() => randomRating(5)}
+            image={product.image}
+            />
+            </div>
+          ))}
+      </div>
+    </div>
+  ) : (
     <div className="home">
       <div className="home__container">
         <img
