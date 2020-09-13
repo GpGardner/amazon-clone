@@ -20,13 +20,12 @@ function Home() {
 
   const randomRating = () => {
     let value = Math.floor(Math.random() * 6);
-     if( value >= 3 ){
-       return value;
-     }else {
-       return randomRating();
-     }
+    if (value >= 3) {
+      return value;
+    } else {
+      return randomRating();
+    }
   };
-
 
   return products ? (
     <div className="home">
@@ -37,18 +36,18 @@ function Home() {
           alt="amazon background"
         />
         {products.map((product, i) => (
-           <div className="home__row">
-             {randomRating()}
-              <Product
-                key={product.id}
-                id={product.id}
-                title={product.title}
-                price={product.price}
-                rating={randomRating()}
-                image={product.image}
-              />
-            </div>
-          ))}
+          <div className="home__row">
+            {randomRating()}
+            <Product
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              price={product.price}
+              rating={randomRating()}
+              image={product.image}
+            />
+          </div>
+        ))}
       </div>
     </div>
   ) : (
