@@ -18,9 +18,15 @@ function Home() {
     getProducts();
   }, []);
 
-  const randomRating = (val) => {
-    return Math.floor(Math.random() * val);
+  const randomRating = () => {
+    let value = Math.floor(Math.random() * 6);
+     if( value >= 3 ){
+       return value;
+     }else {
+       return randomRating();
+     }
   };
+
 
   return products ? (
     <div className="home">
@@ -30,16 +36,17 @@ function Home() {
           src="https://images-eu.ssl-images-amazon.com/images/G/31/prime/Gateway/2020/May/gaming_1500x600._CB431281464_.jpg"
           alt="amazon background"
         />
-        {products.map((product) => (
-        <div className="home__row">
-          <Product
-            key={product.id}
-            id={product.id}
-            title={product.title}
-            price={product.price}
-            rating={() => randomRating(5)}
-            image={product.image}
-            />
+        {products.map((product, i) => (
+           <div className="home__row">
+             {randomRating()}
+              <Product
+                key={product.id}
+                id={product.id}
+                title={product.title}
+                price={product.price}
+                rating={randomRating()}
+                image={product.image}
+              />
             </div>
           ))}
       </div>
