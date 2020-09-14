@@ -3,6 +3,8 @@ import "./Home.css";
 import Product from "./Product";
 import axios from "axios";
 
+import { Grid } from "@material-ui/core";
+
 function Home() {
   const [products, setProducts] = useState([]);
 
@@ -35,19 +37,23 @@ function Home() {
           src="https://images-eu.ssl-images-amazon.com/images/G/31/prime/Gateway/2020/May/gaming_1500x600._CB431281464_.jpg"
           alt="amazon background"
         />
-        {products.map((product, i) => (
-          <div className="home__row">
-            {randomRating()}
-            <Product
-              key={product.id}
-              id={product.id}
-              title={product.title}
-              price={product.price}
-              rating={randomRating()}
-              image={product.image}
-            />
-          </div>
-        ))}
+        <Grid container spacing={5} style={{ justifyContent: "space-evenly"}}>
+          {products.map((product, i) => (
+            <>
+            
+              <Grid item style={{ zIndex: "1", maxWidth: "700px", overflow: "hidden"}}>
+                <Product
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  price={product.price}
+                  rating={randomRating()}
+                  image={product.image}
+                />
+              </Grid>
+            </>
+          ))}
+        </Grid>
       </div>
     </div>
   ) : (
